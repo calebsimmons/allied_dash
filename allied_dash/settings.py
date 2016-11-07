@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'allied_dash',
+    'dashboards',
+    'loans',
 ]
 
 MIDDLEWARE = [
