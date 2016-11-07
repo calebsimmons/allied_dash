@@ -2,7 +2,7 @@ import csv
 
 from loans.models import ClosedLoan
 
-if __name__ == "__main__":
+def init_closed():
      with open('./mock/closed_loans.csv') as f:
             reader = csv.reader(f)
             for row in reader:
@@ -15,7 +15,5 @@ if __name__ == "__main__":
                     loan_type = row[5],
                     purpose = row[6],
                     est_funding_date =row[7],
-                    funds_sent_date = row[8],
-                    funded_milestone_date = row[9],
                     loan_status = row[10]
                 )
