@@ -1,9 +1,110 @@
 {% extends "dashboards/_layout.html" %}
 
-{% block title %}Closed Loans{% endblock %}
+{% block extrahead %}
+<script type="text/javascript">
+$( document ).ready(function() {
 
-{% block dashboard_content %}
-<div class="row  border-bottom white-bg dashboard-header">
+    // draw 30 days closed chart
+    var data = {
+      labels: {{ thirty_days_closed.day_labels|safe }},
+      datasets: [
+        {
+          backgroundColor: 'rgba(26,179,148,0.5)',
+          borderColor: "rgba(26,179,148,0.7)",
+          pointBackgroundColor: "rgba(26,179,148,1)",
+          pointBorderColor: "#fff",
+          data: {{ thirty_days_closed.counts }}
+        }
+      ]
+    };
+    var ctx = document.getElementById("thirtyDaysClosedChart").getContext("2d");
+    var thirtyDaysClosedChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              step: 1
+            }
+          }]
+        },
+        legend: {
+          display: false
+        }
+      }
+    });
 
+    // draw 30 days closed cml chart
+    var data = {
+      labels: {{ thirty_days_closed_cml.day_labels|safe }},
+      datasets: [
+        {
+          backgroundColor: 'rgba(28,137,198,0.5)',
+          borderColor: "rgba(28,137,198,0.7)",
+          pointBackgroundColor: "rgba(28,137,198,1)",
+          pointBorderColor: "#fff",
+          data: {{ thirty_days_closed_cml.sums }}
+        }
+      ]
+    };
+    var ctx = document.getElementById("thirtyDaysClosedCmlChart").getContext("2d");
+    var thirtyDaysClosedCmlChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              step: 1
+            }
+          }]
+        },
+        legend: {
+          display: false
+        }
+      }
+    });
+
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class=row>
+
+  <!-- 30-days-closed-chart -->
+  <div class="col-lg-6">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+      <h5>
+        Loans Closed in last 30 days
+      </h5>
+      </div>
+      <div class="ibox-content">
+        <div><iframe class="chartjs-hidden-iframe" style="width: 100%; display: block; border: 0px; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;"></iframe>
+          <canvas id="thirtyDaysClosedChart" height="327" width="701" style="display: block; width: 701px; height: 327px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 30 days closed cml chart -->
+  <div class="col-lg-6">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+      <h5>
+        Loans Closed in last 30 days (cumulative)
+      </h5>
+      </div>
+      <div class="ibox-content">
+        <div><iframe class="chartjs-hidden-iframe" style="width: 100%; display: block; border: 0px; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;"></iframe>
+          <canvas id="thirtyDaysClosedCmlChart" height="327" width="701" style="display: block; width: 701px; height: 327px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
 {% endblock %}
