@@ -1,5 +1,7 @@
 {% extends "dashboards/_layout.html" %}
 
+{% block title %}Dashboard - Closed Loans{% endblock %}
+
 {% block extrahead %}
 <script type="text/javascript">
 $( document ).ready(function() {
@@ -66,6 +68,30 @@ $( document ).ready(function() {
       }
     });
 
+    //draw 30 days by type pie chart
+    var data = {
+      labels: [
+        "Conventional",
+        "FHA",
+        "VA",
+        "USDA"
+      ],
+      datasets: [{
+        data: [52,32,6,2],
+        backgroundColor: [
+          'rgba(26,179,148,0.5)',
+          'rgba(28,137,198,0.5)',
+          'rgba(181,184,207,0.5)',
+          'rgba(222,222,222,0.5)'
+        ],
+      }]
+    };
+    var ctx = document.getElementById("loanTypePie").getContext("2d");
+    var loanTypePie = new Chart(ctx, {
+      type: 'doughnut',
+      data: data,
+    });
+
 });
 </script>
 {% endblock %}
@@ -78,7 +104,7 @@ $( document ).ready(function() {
     <div class="ibox float-e-margins">
       <div class="ibox-title">
       <h5>
-        Loans Closed in last 30 days
+        Loans Closed in Last 30 Days
       </h5>
       </div>
       <div class="ibox-content">
@@ -94,7 +120,7 @@ $( document ).ready(function() {
     <div class="ibox float-e-margins">
       <div class="ibox-title">
       <h5>
-        Loans Closed in last 30 days (cumulative)
+        Loans Closed in Last 30 Days (cumulative)
       </h5>
       </div>
       <div class="ibox-content">
@@ -104,6 +130,20 @@ $( document ).ready(function() {
       </div>
     </div>
   </div>
+
+  <div class="col-lg-6">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+      <h5>Loans Closed in Last 30 Days By Type</h5>
+      </div>
+      <div class="ibox-content">
+        <div><iframe class="chartjs-hidden-iframe" style="width: 100%; display: block; border: 0px; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;"></iframe>
+          <canvas id="loanTypePie" height="245" width="526" style="display: block; width: 526px; height: 245px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 

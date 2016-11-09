@@ -1,11 +1,12 @@
 import collections
 
 from datetime import date, timedelta, time
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 
-from loans.models import ClosedLoan
+from loans.models import ClosedLoan, NeedsDisclosed
 from .utils import month_delta
 
 
@@ -65,10 +66,15 @@ class ClosedLoansDashView(ListView):
             'sums': list(final_data.values())
         }
 
-    def last_month_closed_by_type(self):
-        last_month = month_delta(date.today(), -1)
-        qs = ClosedLoan.objects.filter(
-                est_funding_date__month=str(last_month.month)
-            ).values('loan_type').annotate(total=Count('loan_type'))
+class NeedsDisclosedDashView(ListView):
+    context_object_name = 'needs_disclosed'
+    template_name = 'dashboards/needs_disclosed.html'
+    fields = ('loan_number', 'loan_officer', 'borrower', 'sub_prop_street',
+              'sub_prop_state', 'sub_prop_zip', 'sub_prop_est_value',
+              'loan_amount', 'application_date', 'disclosures_due_date')
+    model = NeedsDisclosed
 
-        return qs    
+    def get_context_data(self, **kwargs):
+        kwargs['object_list'] = NeedsDisclosed.objects.all().order_by('disclosures_due_date')
+        context = super(NeedsDisclosedDashView, self).get_context_data(**kwargs)
+        return context

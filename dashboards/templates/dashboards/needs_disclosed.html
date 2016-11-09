@@ -1,0 +1,91 @@
+{% extends "dashboards/_layout.html" %}
+{% load humanize %}
+
+{% block title %}Dashboard - Loan Alerts{% endblock %}
+
+{% block content %}
+
+<div class="col-lg-12">
+  <div class="ibox float-e-margins">
+
+    <div class="ibox-title">
+      <h5>Loans Needing Disclosures </h5>
+      <div class="ibox-tools">
+        <a class="collapse-link">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <i class="fa fa-wrench"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+          <li><a href="#">Congig option 1</a></li>
+          <li><a href="#">Config option 2</a></li>
+        </ul>
+        <a class="close-link">
+          <i class="fa fa-times"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="ibox-content">
+
+      <div class="row">
+        <div class="col-sm-2">
+          <div class="form-group">
+            <label class="control-label" for="loan_number">Loan Number</label>
+            <input type="text" id="loan_number" name="loan_number" value="" class="form-control">
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-group">
+            <label class="control-label" for="loan_officer">Loan Officer</label>
+            <input type="text" id="loan_number" name="loan_officer" value="" class="form-control">
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-group">
+            <label class="control-label" for="borrower">Borrower</label>
+            <input type="text" id="borrower" name="borrower" value="" class="form-control">
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label class="control-label" for="loan_number">Subject Property Address</label>
+            <input type="text" id="sub_prop" name="sub_prop" value="" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Loan Number </th>
+              <th>Loan Officer </th>
+              <th>Borrower </th>
+              <th>Subject Property Address </th>
+              <th>Loan Amount</th>
+              <th>Application Date</th>
+              <th>Disclosures Due</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for loan in needs_disclosed %}
+              <tr>
+                <td>{{ loan.loan_number }} </td>
+                <td>{{ loan.loan_officer }} </td>
+                <td>{{ loan.borrower }} </td>
+                <td>{{ loan.sub_prop_street }}, {{ loan.sub_prop_city }}, {{ loan.sub_prop_state }} {{ loan.sub_prop_zip }}</td>
+                <td>${{ loan.loan_amount|intcomma }} </td>
+                <td>{{ loan.application_date }} </td>
+                <td>{{ loan.disclosures_due_date }} </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
